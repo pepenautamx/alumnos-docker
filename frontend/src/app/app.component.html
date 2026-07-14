@@ -1,0 +1,27 @@
+<div style="padding: 30px; font-family: sans-serif;">
+  <h2>📋 Lista de Alumnos y Calificaciones (Docker + GraphQL + Angular)</h2>
+  <hr>
+
+  <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+    <thead style="background-color: #f2f2f2;">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Apellidos</th>
+        <th>Matemáticas</th>
+        <th>Español</th>
+        <th>Historia</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let alumno of alumnos$ | async">
+        <td>{{ alumno.id }}</td>
+        <td><strong>{{ alumno.nombre }}</strong></td>
+        <td>{{ alumno.apellidos }}</td>
+        <td align="center">{{ alumno.matematicas }}</td>
+        <td align="center">{{ alumno.espanol }}</td>
+        <td align="center">{{ alumno.historia }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

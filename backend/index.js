@@ -44,12 +44,17 @@ const resolvers = {
   },
 };
 
-// 4. Inicializar el servidor Apollo
+// 4. Inicializar el servidor Apollo con soporte de CORS explícito
 const server = new ApolloServer({ typeDefs, resolvers });
 
 async function startServer() {
   const { url } = await startStandaloneServer(server, {
     listen: { port: 4000 },
+    // Esto asegura que cualquier puerto local (como el 4200 de tu Angular) pueda leer los datos
+    cors: {
+      origin: '*', 
+      credentials: true,
+    },
   });
   console.log(`🚀 Servidor backend corriendo en: ${url}`);
 }
