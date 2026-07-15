@@ -1,0 +1,401 @@
+<div id="inicio-pagina" class="docker-guide-container" style="padding: 30px; font-family: sans-serif; line-height: 1.6; color: #333; max-width: 1250px; margin: 0 auto; font-size: 17px; scroll-behavior: smooth;">
+  <h1 style="color: #0091ff; border-bottom: 2px solid #0091ff; padding-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+    🐳 Módulo Educativo: Comprendiendo Docker desde Cero
+  </h1>
+  <p><strong>Autor de la Bitácora:</strong> Pepe</p>
+  <p>En este módulo analizaremos qué es Docker, cómo opera bajo el capó, las tripas de nuestras configuraciones reales explicadas línea por línea y cómo lo utilizamos en nuestro proyecto.</p>
+
+  <hr>
+
+  @if (filtro() === '' || 'que es docker contenedor maritimo analogia estandarizado software plataforma unidad'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px;">
+      <h2 style="color: #2c3e50;">💡 ¿Qué es Docker?</h2>
+      <p><strong>Docker</strong> es una plataforma que permite empaquetar una aplicación junto con todo lo que necesita para funcionar (librerías, configuraciones, bases de datos) dentro de una unidad llamada <strong>contenedor</strong>. Esto garantiza que el software funcione exactamente igual en tu computadora, en la de un compañero, o en un servidor en la nube.</p>
+
+      <div style="background-color: #eef7ff; border-left: 4px solid #0091ff; padding: 20px; margin: 20px 0; border-radius: 8px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 280px;">
+          <strong style="color: #0072ff; font-size: 1.1em;">📦 Ejemplo de la vida real: El Contenedor Marítimo</strong><br>
+          Antes de 1956, transportar mercancías en barcos era un caos: las cajas sueltas se mezclaban e incluso dañaban entre sí. La solución fue el <strong>contenedor estandarizado</strong>. No importa qué contenga; el contenedor mide lo mismo, encaja perfectamente, se cierra herméticamente y cualquier grúa del mundo lo puede mover de forma uniforme.
+          <br><br>
+          ¡Docker hace exactamente lo mismo con el software!
+        </div>
+        
+        <!-- SVG: Contenedor Marítimo de Software -->
+        <svg viewBox="0 0 200 120" style="width: 280px; height: 170px; background: #fafafa; border-radius: 8px; border: 1px solid #e2e8f0; padding: 5px;">
+          <defs>
+            <linearGradient id="cargoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#00c6ff" />
+              <stop offset="100%" style="stop-color:#0072ff" />
+            </linearGradient>
+            <filter id="shadow">
+              <feDropShadow dx="1" dy="2" stdDeviation="1.5" flood-opacity="0.15"/>
+            </filter>
+          </defs>
+          <rect x="20" y="30" width="160" height="70" rx="4" fill="url(#cargoGrad)" filter="url(#shadow)"/>
+          <line x1="40" y1="30" x2="40" y2="100" stroke="#ffffff" stroke-width="2" stroke-dasharray="3,3"/>
+          <line x1="80" y1="30" x2="80" y2="100" stroke="#ffffff" stroke-width="2" stroke-dasharray="3,3"/>
+          <line x1="120" y1="30" x2="120" y2="100" stroke="#ffffff" stroke-width="2" stroke-dasharray="3,3"/>
+          <line x1="160" y1="30" x2="160" y2="100" stroke="#ffffff" stroke-width="2" stroke-dasharray="3,3"/>
+          <rect x="30" y="45" width="40" height="40" rx="3" fill="#ffffff" fill-opacity="0.2"/>
+          <text x="50" y="68" fill="#ffffff" font-size="10" font-family="sans-serif" font-weight="bold" text-anchor="middle">CÓDIGO</text>
+          <rect x="90" y="45" width="40" height="40" rx="3" fill="#ffffff" fill-opacity="0.2"/>
+          <text x="110" y="68" fill="#ffffff" font-size="10" font-family="sans-serif" font-weight="bold" text-anchor="middle">LIBS</text>
+          <rect x="135" y="10" width="30" height="20" fill="#2c3e50" rx="2"/>
+          <text x="150" y="23" fill="#ffffff" font-size="8" font-family="sans-serif" text-anchor="middle">Docker</text>
+        </svg>
+      </div>
+    </section>
+  }
+
+  @if (filtro() === '' || 'como funciona pilares dockerfile imagen contenedor tabla receta pastel congelado fiesta diagrama flujo'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px;">
+      <h2 style="color: #2c3e50;">⚙️ ¿Cómo funciona? Los 3 Pilares</h2>
+      <p>Para entender a Docker hay que dominar tres conceptos clave estructurados en el siguiente flujo:</p>
+
+      <!-- Diagrama de Flujo: Los 3 Pilares -->
+      <div style="background: #fafafa; border: 1px solid #e2e8f0; border-radius: 8px; padding: 25px; margin: 20px 0; text-align: center;">
+        <svg viewBox="0 0 700 160" style="width: 100%; max-width: 1100px; height: auto;">
+          <!-- Defs for markers and styles -->
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#718096" />
+            </marker>
+          </defs>
+          
+          <!-- Pilar 1: Dockerfile -->
+          <rect x="10" y="10" width="160" height="110" rx="8" fill="#ffffff" stroke="#cbd5e0" stroke-width="2"/>
+          <text x="90" y="35" font-family="sans-serif" font-size="14" font-weight="bold" fill="#2d3748" text-anchor="middle">1. Dockerfile</text>
+          <text x="90" y="65" font-family="sans-serif" font-size="11" fill="#718096" text-anchor="middle">La Receta (Código)</text>
+          <text x="90" y="85" font-family="sans-serif" font-size="10" fill="#a0aec0" text-anchor="middle">Instrucciones de armado</text>
+          
+          <!-- Flecha 1 -->
+          <line x1="180" y1="65" x2="250" y2="65" stroke="#718096" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="215" y="55" font-family="sans-serif" font-size="10" font-weight="bold" fill="#4a5568" text-anchor="middle">build</text>
+
+          <!-- Pilar 2: Imagen -->
+          <rect x="260" y="10" width="160" height="110" rx="8" fill="#ebf8ff" stroke="#3182ce" stroke-width="2"/>
+          <text x="340" y="35" font-family="sans-serif" font-size="14" font-weight="bold" fill="#2b6cb0" text-anchor="middle">2. Imagen</text>
+          <text x="340" y="65" font-family="sans-serif" font-size="11" fill="#2b6cb0" text-anchor="middle">Pastel Congelado</text>
+          <text x="340" y="85" font-family="sans-serif" font-size="10" fill="#4299e1" text-anchor="middle">Snapshot inmutable</text>
+
+          <!-- Flecha 2 -->
+          <line x1="430" y1="65" x2="500" y2="65" stroke="#718096" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="465" y="55" font-family="sans-serif" font-size="10" font-weight="bold" fill="#4a5568" text-anchor="middle">run</text>
+
+          <!-- Pilar 3: Contenedor -->
+          <rect x="510" y="10" width="160" height="110" rx="8" fill="#f0fff4" stroke="#38a169" stroke-width="2"/>
+          <text x="590" y="35" font-family="sans-serif" font-size="14" font-weight="bold" fill="#276749" text-anchor="middle">3. Contenedor</text>
+          <text x="590" y="65" font-family="sans-serif" font-size="11" fill="#276749" text-anchor="middle">Instancia Viva</text>
+          <text x="590" y="85" font-family="sans-serif" font-size="10" fill="#48bb78" text-anchor="middle">Proceso en memoria</text>
+        </svg>
+      </div>
+    </section>
+  }
+
+  @if (filtro() === '' || 'dockerfile backend linea por linea from node workdir app copy run npm install expose cmd index.js alpine'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px; background-color: #fafafa; border: 1px solid #e1e4e6; padding: 25px; border-radius: 6px;">
+      <h2 style="color: #2980b9; margin-top: 0;">🛠️ El Dockerfile de nuestro Backend (Explicado línea por línea)</h2>
+      <p>Este es el archivo que creamos dentro de la carpeta <code>/backend</code> para indicarle a Docker cómo debe empaquetar nuestra API de GraphQL:</p>
+
+      <pre style="background: #2c3e50; color: #fff; padding: 15px; border-radius: 5px; overflow-x: auto;">
+FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 4000
+CMD ["node", "index.js"]</pre>
+
+      <h3 style="color: #34495e;">🔎 ¿Qué hace cada instrucción?</h3>
+      <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-top: 15px; background: #fff;">
+        <thead style="background-color: #f2f2f2;">
+          <tr>
+            <th style="width: 30%;">Instrucción</th>
+            <th>Explicación Técnica Destripada</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>FROM node:20-alpine</code></td>
+            <td>Define el sistema operativo base. En lugar de instalar un Linux gigante, bajamos <strong>Alpine</strong> (distribución ligera de 5MB) que ya viene con <strong>Node.js versión 20</strong> preinstalado.</td>
+          </tr>
+          <tr>
+            <td><code>WORKDIR /app</code></td>
+            <td>Crea una carpeta llamada <code>/app</code> dentro del contenedor y se para en ella para el directorio de trabajo virtual.</td>
+          </tr>
+          <tr>
+            <td><code>COPY package*.json ./</code></td>
+            <td>Copia los archivos de dependencias de tu computadora al contenedor aprovechando la caché de capas de Docker.</td>
+          </tr>
+          <tr>
+            <td><code>RUN npm install</code></td>
+            <td>Ejecuta el comando para descargar todas las librerías necesarias (como <code>apollo-server</code>, <code>graphql</code>, y <code>pg</code>) directo al contenedor.</td>
+          </tr>
+          <tr>
+            <td><code>COPY . .</code></td>
+            <td>Copia todo el resto del código fuente del backend (como tu archivo <code>index.js</code>) desde tu computadora al contenedor.</td>
+          </tr>
+          <tr>
+            <td><code>EXPOSE 4000</code></td>
+            <td>Informa que el contenedor escuchará peticiones en el puerto <strong>4000</strong> de forma interna.</td>
+          </tr>
+          <tr>
+            <td><code>CMD ["node", "index.js"]</code></td>
+            <td>El comando final que se ejecuta <strong>únicamente cuando el contenedor se enciende</strong> para mantener el servidor web arriba.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  }
+
+  @if (filtro() === '' || 'docker-compose yml yaml db postgres alpine name restart environment ports volumes dependson context microservicios red network dns resolucion diagrama arquitectura'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px; background-color: #fafafa; border: 1px solid #e1e4e6; padding: 25px; border-radius: 6px;">
+      <h2 style="color: #27ae60; margin-top: 0;">🎼 El docker-compose.yml (Explicado línea por línea)</h2>
+      <p>Este archivo vive en la raíz del proyecto y sirve para levantar múltiples contenedores conectados entre sí:</p>
+
+      <pre style="background: #2c3e50; color: #fff; padding: 15px; border-radius: 5px; overflow-x: auto;">
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: db_alumnos
+    restart: always
+    environment:
+      POSTGRES_USER: pepe_admin
+      POSTGRES_PASSWORD: supersecretpassword
+      POSTGRES_DB: escuela_db
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db-init:/docker-entrypoint-initdb.d
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: api_alumnos
+    restart: always
+    ports:
+      - "4000:4000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: pepe_admin
+      DB_PASSWORD: supersecretpassword
+      DB_DATABASE: escuela_db
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:</pre>
+
+      <h3 style="color: #34495e;">🔎 ¿Qué hace cada bloque y parámetro?</h3>
+      <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-top: 15px; background: #fff;">
+        <thead style="background-color: #f2f2f2;">
+          <tr>
+            <th style="width: 30%;">Parámetro</th>
+            <th>Explicación Técnica Destripada</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>version: '3.8'</code></td>
+            <td>Especifica la versión del motor de Docker Compose que vamos a usar para el archivo.</td>
+          </tr>
+          <tr>
+            <td><code>services:</code></td>
+            <td>Indica el inicio de la definición de los contenedores que van a trabajar en equipo (<code>db</code> y <code>backend</code>).</td>
+          </tr>
+          <tr>
+            <td><code>db -> image</code></td>
+            <td>Le dice a Docker que descargue la imagen oficial ya optimizada de PostgreSQL 15 desde Docker Hub.</td>
+          </tr>
+          <tr>
+            <td><code>container_name: ...</code></td>
+            <td>Asigna un nombre fijo al contenedor (ej. <code>db_alumnos</code> y <code>api_alumnos</code>) para identificarlos fácilmente.</td>
+          </tr>
+          <tr>
+            <td><code>restart: always</code></td>
+            <td>Si el contenedor se cae o la máquina se reinicia, Docker volverá a encender el servicio automáticamente.</td>
+          </tr>
+          <tr>
+            <td><code>environment:</code></td>
+            <td>Inyecta variables de entorno para configurar las credenciales de acceso de las bases de datos y la API.</td>
+          </tr>
+          <tr>
+            <td><code>ports:</code></td>
+            <td>Redirección de puertos. El Postgres corre interno en el 5432 pero lo mapeamos al 5435 afuera para no generar conflictos en tu máquina.</td>
+          </tr>
+          <tr>
+            <td><code>volumes:</code></td>
+            <td>
+              Mapea directorios. En este compose usamos dos tipos:
+              <ul>
+                <li><strong>Volumen Nombrado (<code>postgres_data</code>):</strong> Docker maneja los archivos en su propio espacio interno para persistir los datos de la BD incluso si destruyes el contenedor.</li>
+                <li><strong>Bind Mount (<code>./db-init:...</code>):</strong> Enlaza de forma directa una carpeta real de tu computadora al contenedor (en este caso para inicializar scripts SQL).</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td><code>backend -> build:</code></td>
+            <td>Le ordena a Docker Compose entrar a <code>./backend</code> y compilar la imagen usando el Dockerfile local.</td>
+          </tr>
+          <tr>
+            <td><code>depends_on: - db</code></td>
+            <td>Establece el orden de encendido obligando al backend a esperar a que Postgres esté 100% levantado primero.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Diagrama de Arquitectura de Red y Puertos -->
+      <h3 style="color: #34495e; margin-top: 30px;">📡 Diagrama de Red y Mapeo de Puertos</h3>
+      <div style="background: #fafafa; border: 1px solid #e2e8f0; border-radius: 8px; padding: 25px; margin: 20px 0; text-align: center;">
+        <svg viewBox="0 0 750 220" style="width: 100%; max-width: 1150px; height: auto;">
+          <!-- PC Host (Maquina Fisica) -->
+          <rect x="10" y="10" width="730" height="200" rx="10" fill="#f7fafc" stroke="#edf2f7" stroke-width="3"/>
+          <text x="30" y="35" font-family="sans-serif" font-size="12" font-weight="bold" fill="#718096">TU COMPUTADORA LOCAL (HOST)</text>
+          
+          <!-- Docker Network Container -->
+          <rect x="30" y="60" width="690" height="130" rx="8" fill="#ebf8ff" stroke="#90cdf4" stroke-width="2" stroke-dasharray="4,4"/>
+          <text x="50" y="80" font-family="sans-serif" font-size="11" font-weight="bold" fill="#3182ce">Red de Docker Compose</text>
+
+          <!-- DB Alumnos Container -->
+          <rect x="60" y="100" width="200" height="70" rx="6" fill="#ffffff" stroke="#4299e1" stroke-width="2"/>
+          <text x="160" y="125" font-family="sans-serif" font-size="12" font-weight="bold" fill="#2b6cb0" text-anchor="middle">db (db_alumnos)</text>
+          <text x="160" y="145" font-family="sans-serif" font-size="10" fill="#4299e1" text-anchor="middle">Interno: 5432</text>
+          <text x="160" y="160" font-family="sans-serif" font-size="9" fill="#a0aec0" text-anchor="middle">PostgreSQL</text>
+
+          <!-- Backend Container -->
+          <rect x="490" y="100" width="200" height="70" rx="6" fill="#ffffff" stroke="#48bb78" stroke-width="2"/>
+          <text x="590" y="125" font-family="sans-serif" font-size="12" font-weight="bold" fill="#22543d" text-anchor="middle">backend (api_alumnos)</text>
+          <text x="590" y="145" font-family="sans-serif" font-size="10" fill="#48bb78" text-anchor="middle">Interno: 4000</text>
+          <text x="590" y="160" font-family="sans-serif" font-size="9" fill="#a0aec0" text-anchor="middle">NodeJS (Apollo GraphQL)</text>
+
+          <!-- Conexión DNS interna -->
+          <path d="M 270 135 L 480 135" stroke="#3182ce" stroke-width="2" stroke-dasharray="5,5"/>
+          <polygon points="480,135 472,130 472,140" fill="#3182ce"/>
+          <text x="375" y="125" font-family="sans-serif" font-size="10" font-weight="bold" fill="#3182ce" text-anchor="middle">Host: db (puerto 5432)</text>
+
+          <!-- Mapeos externos a Puertos Host -->
+          <!-- DB Expose -->
+          <line x1="160" y1="100" x2="160" y2="40" stroke="#e53e3e" stroke-width="1.5" stroke-dasharray="2,2"/>
+          <circle cx="160" cy="40" r="3" fill="#e53e3e"/>
+          <text x="165" y="50" font-family="sans-serif" font-size="9" fill="#e53e3e" font-weight="bold">Externo: 5435</text>
+
+          <!-- API Expose -->
+          <line x1="590" y1="100" x2="590" y2="40" stroke="#e53e3e" stroke-width="1.5" stroke-dasharray="2,2"/>
+          <circle cx="590" cy="40" r="3" fill="#e53e3e"/>
+          <text x="595" y="50" font-family="sans-serif" font-size="9" fill="#e53e3e" font-weight="bold">Externo: 4000</text>
+        </svg>
+      </div>
+    </section>
+  }
+
+  @if (filtro() === '' || 'maquina virtual vs contenedor diferencia ligereza kernel departamento amueblado comparativo graficos'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px;">
+      <h2 style="color: #2c3e50;">🧠 ¿Máquina Virtual vs Contenedor? Explicación Visual</h2>
+      <p>La gran diferencia radica en el peso de la arquitectura y la compartición de recursos del sistema:</p>
+
+      <!-- SVG Comparativo: Máquina Virtual vs Contenedor -->
+      <div style="background: #fafafa; border: 1px solid #e2e8f0; border-radius: 8px; padding: 25px; margin: 20px 0; text-align: center;">
+        <svg viewBox="0 0 700 240" style="width: 100%; max-width: 1100px; height: auto;">
+          <!-- MAQUINA VIRTUAL (Izquierda) -->
+          <text x="150" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#e53e3e" text-anchor="middle">Máquina Virtual (Pesado)</text>
+          
+          <rect x="50" y="45" width="200" height="25" rx="3" fill="#cbd5e0"/>
+          <text x="150" y="62" font-family="sans-serif" font-size="11" fill="#4a5568" text-anchor="middle">Infraestructura Física</text>
+
+          <rect x="50" y="75" width="200" height="25" rx="3" fill="#a0aec0"/>
+          <text x="150" y="92" font-family="sans-serif" font-size="11" fill="#ffffff" text-anchor="middle">Host OS (Tu Windows/Mac)</text>
+
+          <rect x="50" y="105" width="200" height="25" rx="3" fill="#4a5568"/>
+          <text x="150" y="122" font-family="sans-serif" font-size="11" fill="#ffffff" text-anchor="middle">Hipervisor (ej. VirtualBox)</text>
+
+          <!-- VM Stack -->
+          <rect x="50" y="135" width="95" height="90" rx="4" fill="#feebc8" stroke="#dd6b20" stroke-width="1.5"/>
+          <text x="97" y="155" font-family="sans-serif" font-size="10" font-weight="bold" fill="#dd6b20" text-anchor="middle">Guest OS (Gigabytes)</text>
+          <text x="97" y="185" font-family="sans-serif" font-size="9" fill="#7b341e" text-anchor="middle">Librerías</text>
+          <text x="97" y="205" font-family="sans-serif" font-size="10" font-weight="bold" fill="#7b341e" text-anchor="middle">APP 1</text>
+
+          <rect x="155" y="135" width="95" height="90" rx="4" fill="#feebc8" stroke="#dd6b20" stroke-width="1.5"/>
+          <text x="202" y="155" font-family="sans-serif" font-size="10" font-weight="bold" fill="#dd6b20" text-anchor="middle">Guest OS (Gigabytes)</text>
+          <text x="202" y="185" font-family="sans-serif" font-size="9" fill="#7b341e" text-anchor="middle">Librerías</text>
+          <text x="202" y="205" font-family="sans-serif" font-size="10" font-weight="bold" fill="#7b341e" text-anchor="middle">APP 2</text>
+
+
+          <!-- CONTENEDOR DOCKER (Derecha) -->
+          <text x="520" y="25" font-family="sans-serif" font-size="14" font-weight="bold" fill="#3182ce" text-anchor="middle">Contenedor Docker (Ligero)</text>
+          
+          <rect x="420" y="45" width="200" height="25" rx="3" fill="#cbd5e0"/>
+          <text x="520" y="62" font-family="sans-serif" font-size="11" fill="#4a5568" text-anchor="middle">Infraestructura Física</text>
+
+          <rect x="420" y="75" width="200" height="25" rx="3" fill="#a0aec0"/>
+          <text x="520" y="92" font-family="sans-serif" font-size="11" fill="#ffffff" text-anchor="middle">Host OS (Comparte el Kernel)</text>
+
+          <rect x="420" y="105" width="200" height="25" rx="3" fill="#3182ce"/>
+          <text x="520" y="122" font-family="sans-serif" font-size="11" fill="#ffffff" text-anchor="middle">Docker Engine (Ligero)</text>
+
+          <!-- Containers Stack -->
+          <rect x="420" y="135" width="95" height="90" rx="4" fill="#e6fffa" stroke="#319795" stroke-width="1.5"/>
+          <text x="467" y="165" font-family="sans-serif" font-size="11" font-weight="bold" fill="#319795" text-anchor="middle">Contenedor 1</text>
+          <text x="467" y="185" font-family="sans-serif" font-size="9" fill="#234e52" text-anchor="middle">Librerías (MBs)</text>
+          <text x="467" y="205" font-family="sans-serif" font-size="10" font-weight="bold" fill="#234e52" text-anchor="middle">APP 1</text>
+
+          <rect x="525" y="135" width="95" height="90" rx="4" fill="#e6fffa" stroke="#319795" stroke-width="1.5"/>
+          <text x="572" y="165" font-family="sans-serif" font-size="11" font-weight="bold" fill="#319795" text-anchor="middle">Contenedor 2</text>
+          <text x="572" y="185" font-family="sans-serif" font-size="9" fill="#234e52" text-anchor="middle">Librerías (MBs)</text>
+          <text x="572" y="205" font-family="sans-serif" font-size="10" font-weight="bold" fill="#234e52" text-anchor="middle">APP 2</text>
+        </svg>
+      </div>
+    </section>
+  }
+
+  @if (filtro() === '' || 'comandos basicos docker compose ps logs down build exec it terminal chuleta cheat sheet'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px;">
+      <h2 style="color: #2c3e50; border-left: 4px solid #e67e22; padding-left: 10px;">📜 Chuleta de Comandos Básicos (Cheat Sheet)</h2>
+      <p>Los comandos indispensables para operar este ecosistema en el día a día desde tu terminal:</p>
+
+      <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+        <thead style="background-color: #f2f2f2;">
+          <tr>
+            <th style="width: 35%;">Comando</th>
+            <th>¿Para qué sirve?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>docker compose up -d --build</code></td>
+            <td>Compila las imágenes locales, crea las redes, levanta los contenedores en segundo plano (<code>-d</code>) e inicializa los servicios.</td>
+          </tr>
+          <tr>
+            <td><code>docker compose ps</code></td>
+            <td>Lista todos los contenedores activos de tu proyecto actual indicando su estado y puertos.</td>
+          </tr>
+          <tr>
+            <td><code>docker compose logs -f</code></td>
+            <td>Muestra en tiempo real las salidas de terminal (logs) de todos los contenedores para depurar errores.</td>
+          </tr>
+          <tr>
+            <td><code>docker compose down</code></td>
+            <td>Apaga los contenedores y destruye las redes virtuales creadas (los datos no se pierden gracias al volumen mapeado).</td>
+          </tr>
+          <tr>
+            <td><code>docker exec -it api_alumnos sh</code></td>
+            <td>Abre una terminal interactiva (<code>-it</code>) usando shell (<code>sh</code>) dentro del contenedor en ejecución del backend.</td>
+          </tr>
+          <tr>
+            <td><code>docker system prune -a --volumes</code></td>
+            <td>Comando de limpieza profunda. Elimina todas las imágenes, contenedores apagados y redes huérfanas para liberar espacio en disco.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  }
+
+  <!-- Botón flotante para subir al inicio -->
+  <a href="#inicio-pagina" style="position: fixed; bottom: 40px; right: 40px; width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #0091ff, #0072ff); color: white; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); transition: transform 0.2s, background-color 0.2s; z-index: 1000;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" title="Subir al inicio">
+    ▲
+  </a>
+</div>

@@ -1,0 +1,108 @@
+<div id="inicio-pagina" class="init-guide-container" style="padding: 30px; font-family: sans-serif; line-height: 1.6; color: #333; max-width: 1250px; margin: 0 auto; font-size: 17px; scroll-behavior: smooth;">
+  <h1 style="color: #27ae60; border-bottom: 2px solid #27ae60; padding-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+    🚀 Guía de Despliegue Rápido: Ejecutar el Proyecto en una Computadora Nueva
+  </h1>
+  <p><strong>Autor de la Bitácora:</strong> Pepe</p>
+  <p>¿Vas a continuar trabajando en casa o en una máquina limpia? Esta guía rápida detalla los pasos exactos para descargar el repositorio de GitHub y poner en marcha todo el ecosistema (Base de Datos, Backend y Frontend) en cuestión de minutos.</p>
+
+  <hr>
+
+  @if (filtro() === '' || 'requisitos previos instalar node docker desktop git v20 v18'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px;">
+      <h2 style="color: #2c3e50; border-left: 4px solid #7f8c8d; padding-left: 10px;">⚙️ Paso 0: Requisitos Previos</h2>
+      <p>Asegúrate de tener instalados los siguientes tres pilares en tu nueva computadora:</p>
+      <ul>
+        <li><strong>Git:</strong> Para clonar el repositorio. (<a href="https://git-scm.com/" target="_blank">Instalar Git</a>)</li>
+        <li><strong>Node.js LTS (v20 o superior):</strong> Necesario para arrancar dependencias de desarrollo. (<a href="https://nodejs.org/" target="_blank">Instalar Node</a>)</li>
+        <li><strong>Docker Desktop:</strong> El motor indispensable para la base de datos y orquestación. ¡Asegúrate de que esté encendido! (<a href="https://www.docker.com/" target="_blank">Instalar Docker</a>)</li>
+      </ul>
+    </section>
+  }
+
+  @if (filtro() === '' || 'clonar repositorio git clone github descargar carpeta alumnos-docker'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px;">
+      <h2 style="color: #2c3e50; border-left: 4px solid #2980b9; padding-left: 10px;">📥 Paso 1: Clonar el Repositorio</h2>
+      <p>Abre tu terminal favorita (Git Bash, PowerShell o Terminal de macOS/Linux) y clona el proyecto en la carpeta de tu preferencia:</p>
+      
+      <pre style="background: #2c3e50; color: #fff; padding: 12px; border-radius: 5px; overflow-x: auto;">
+git clone https://github.com/pepenautamx/alumnos-docker.git
+cd alumnos-docker</pre>
+    </section>
+  }
+
+  @if (filtro() === '' || 'variables entorno configurar env backend host port db user password database'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px;">
+      <h2 style="color: #2c3e50; border-left: 4px solid #f39c12; padding-left: 10px;">🔑 Paso 2: Crear el archivo de Variables de Entorno</h2>
+      <p>El backend necesita leer las credenciales de conexión. Crea un archivo de texto llamado <code>.env</code> dentro de la carpeta <code>/backend</code>:</p>
+
+      <p>Ruta: <code>alumnos-docker/backend/.env</code></p>
+      <pre style="background: #2c3e50; color: #fff; padding: 12px; border-radius: 5px; overflow-x: auto;">
+DB_HOST=localhost
+DB_PORT=5435
+DB_USER=pepe_admin
+DB_PASSWORD=supersecretpassword
+DB_DATABASE=escuela_db</pre>
+      <p>💡 <em>Nota: Si vas a correr todo usando Docker Compose, la variable <code>DB_HOST</code> debe cambiarse de <code>localhost</code> a <code>db</code> (que es el nombre del servicio de la BD en la red virtual).</em></p>
+    </section>
+  }
+
+  @if (filtro() === '' || 'arrancar levantar correr docker compose up build despliegue rapido nginx localhost puerto 80'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px; background-color: #f4faf7; border: 1px solid #d4efdf; padding: 25px; border-radius: 8px;">
+      <h2 style="color: #27ae60; margin-top: 0;">🚀 Opción A: Despliegue Rápido con Docker (Recomendado)</h2>
+      <p>Esta es la vía más rápida y limpia. No necesitas instalar paquetes de Node ni inyectar bases de datos de forma manual. Docker compilará el backend, creará el servidor Nginx para el frontend e inicializará las tablas con un solo comando:</p>
+
+      <p>Ejecuta este comando en la **raíz del proyecto** (donde está el archivo <code>docker-compose.yml</code>):</p>
+      <pre style="background: #2c3e50; color: #fff; padding: 12px; border-radius: 5px; overflow-x: auto;">docker compose up -d --build</pre>
+
+      <h4 style="color: #27ae60; margin-bottom: 5px; margin-top: 20px;">🌐 Direcciones de acceso locales en Docker:</h4>
+      <ul>
+        <li><strong>Frontend (Angular + Nginx):</strong> Abre <a href="http://localhost" target="_blank">http://localhost</a> (Puerto 80).</li>
+        <li><strong>Backend (Apollo GraphQL Playground):</strong> Abre <a href="http://localhost:4000" target="_blank">http://localhost:4000</a>.</li>
+        <li><strong>Base de Datos:</strong> Mapeada externamente en el puerto <code>5435</code>.</li>
+      </ul>
+      <p>💡 <em>El semillado y creación de tablas es 100% automático gracias al script mapeado de <code>/db-init/init.sql</code>.</em></p>
+    </section>
+  }
+
+  @if (filtro() === '' || 'modo desarrollo local sin docker run npm install start angular serve api'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px; background-color: #fbfcfc; border: 1px solid #e5e8e8; padding: 25px; border-radius: 8px;">
+      <h2 style="color: #2980b9; margin-top: 0;">💻 Opción B: Modo Desarrollo Local (Para programar código)</h2>
+      <p>Si tu intención es modificar y programar código en tiempo real con recarga automática, debes levantar los servicios localmente paso a paso:</p>
+
+      <h4 style="color: #2980b9; margin-bottom: 5px;">Paso B1. Encender la base de datos (Docker):</h4>
+      <pre style="background: #2c3e50; color: #fff; padding: 12px; border-radius: 5px; overflow-x: auto;">docker run --name db_alumnos -e POSTGRES_USER=pepe_admin -e POSTGRES_PASSWORD=supersecretpassword -e POSTGRES_DB=escuela_db -p 5435:5432 -d postgres:15-alpine</pre>
+      <p><em>(Recuerda conectarte mediante DBeaver y ejecutar el script SQL de creación de tablas de la Fase 1 o usar init.sql).</em></p>
+
+      <h4 style="color: #2980b9; margin-bottom: 5px; margin-top: 20px;">Paso B2. Arrancar el Backend (GraphQL):</h4>
+      <pre style="background: #2c3e50; color: #fff; padding: 12px; border-radius: 5px; overflow-x: auto;">
+cd backend
+npm install
+node index.js</pre>
+      <p>El servidor levantará en <a href="http://localhost:4000" target="_blank">http://localhost:4000</a>.</p>
+
+      <h4 style="color: #2980b9; margin-bottom: 5px; margin-top: 20px;">Paso B3. Arrancar el Frontend (Angular):</h4>
+      <pre style="background: #2c3e50; color: #fff; padding: 12px; border-radius: 5px; overflow-x: auto;">
+cd frontend
+npm install --legacy-peer-deps
+npx ng serve</pre>
+      <p>El frontend de desarrollo levantará en <a href="http://localhost:4200" target="_blank">http://localhost:4200</a>.</p>
+    </section>
+  }
+
+  @if (filtro() === '' || 'verificacion fallos logs docker compose logs ps comprobacion'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px;">
+      <h2 style="color: #2c3e50; border-left: 4px solid #e74c3c; padding-left: 10px;">🕵️ Verificación y Solución de problemas rápidos</h2>
+      <p>¿Algo no responde al levantar con Docker Compose? Ejecuta estos comandos de diagnóstico:</p>
+      <ul>
+        <li><strong>Verificar estado de contenedores:</strong> <code>docker compose ps</code> (Asegúrate de que digan "Up").</li>
+        <li><strong>Ver logs en tiempo real:</strong> <code>docker compose logs -f</code> (Busca errores de conexión a Postgres).</li>
+        <li><strong>Reiniciar desde cero:</strong> <code>docker compose down && docker compose up -d --build</code>.</li>
+      </ul>
+    </section>
+  }
+
+  <!-- Botón flotante para subir al inicio -->
+  <a href="#inicio-pagina" style="position: fixed; bottom: 40px; right: 40px; width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #27ae60, #2ecc71); color: white; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); transition: transform 0.2s, background-color 0.2s; z-index: 1000;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" title="Subir al inicio">
+    ▲
+  </a>
+</div>

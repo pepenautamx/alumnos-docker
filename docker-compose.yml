@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  postgres_db:
+  db:
     image: postgres:15-alpine
     container_name: db_alumnos
     restart: always
@@ -13,6 +13,35 @@ services:
       - "5435:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./db-init:/docker-entrypoint-initdb.d
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: api_alumnos
+    restart: always
+    ports:
+      - "4000:4000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: pepe_admin
+      DB_PASSWORD: supersecretpassword
+      DB_DATABASE: escuela_db
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: web_alumnos
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
 
 volumes:
   postgres_data:

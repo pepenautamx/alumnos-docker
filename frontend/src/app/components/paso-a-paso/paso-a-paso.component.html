@@ -1,0 +1,544 @@
+<div id="inicio-pagina" class="guia-container" style="padding: 30px; font-family: sans-serif; line-height: 1.6; color: #333; max-width: 1250px; margin: 0 auto; font-size: 17px; scroll-behavior: smooth;">
+  <h1 style="color: #1976d2; border-bottom: 2px solid #1976d2; padding-bottom: 10px;">🛡️ Bitácora Maestra de Arquitectura: Guía de Construcción Paso a Paso</h1>
+  <p><strong>Desarrollador Principal:</strong> Pepe</p>
+  <p>Usa el buscador del menú superior para filtrar rápidamente por comandos, configuraciones específicas o fases de este ecosistema.</p>
+
+  <hr>
+
+  @if (filtro() === '' || 'fase 0 requisitos previos descargar instalar node.js docker desktop dbeaver angular cli'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px;">
+      <h2 style="color: #2c3e50; border-left: 4px solid #34495e; padding-left: 10px;">🛠️ Fase 0: Requisitos Previos (El Paso Cero)</h2>
+      <p>Antes de comenzar con la infraestructura, es indispensable que cuentes con las siguientes herramientas instaladas en tu máquina local:</p>
+
+      <h4 style="color: #34495e; margin-bottom: 5px;">1. Entornos de Ejecución y Contenedores:</h4>
+      <ul>
+        <li><strong>Node.js LTS (v20 o superior):</strong> Descárgalo desde <a href="https://nodejs.org/" target="_blank">nodejs.org</a>.</li>
+        <li><strong>Docker Desktop:</strong> Descárgalo e instálalo desde <a href="https://www.docker.com/" target="_blank">docker.com</a>. Recuerda mantener el motor de Docker encendido.</li>
+      </ul>
+
+      <h4 style="color: #34495e; margin-bottom: 5px; margin-top: 20px;">2. Clientes de Base de Datos y CLI global:</h4>
+      <ul>
+        <li><strong>DBeaver Community Edition:</strong> Descárgalo desde <a href="https://dbeaver.io/" target="_blank">dbeaver.io</a>.</li>
+        <li><strong>Angular CLI (Global):</strong> Ejecuta el siguiente comando en tu terminal para instalar la interfaz de comandos de Angular de manera global:</li>
+      </ul>
+      <pre style="background: #2c3e50; color: #fff; padding: 12px; border-radius: 5px; overflow-x: auto;">npm install -g &#64;angular/cli</pre>
+    </section>
+  }
+
+  @if (filtro() === '' || 'fase 1 base de datos postgresql docker run escuela_db query create table insert sql dbeaver automatizacion db-init docker-entrypoint-initdb.d'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px;">
+      <h2 style="color: #2c3e50; border-left: 4px solid #1976d2; padding-left: 10px;">🗄️ Fase 1: Creación de la Base de Datos (PostgreSQL en Docker)</h2>
+      <p>El primer paso fue levantar el motor de base de datos de manera aislada y crear la estructura física de la tabla de calificaciones de manera manual o automatizada.</p>
+
+      <h4 style="color: #1976d2; margin-bottom: 5px;">1. Comando para inicializar el contenedor temporal de desarrollo:</h4>
+      <pre style="background: #2c3e50; color: #fff; padding: 12px; border-radius: 5px; overflow-x: auto;">docker run --name db_alumnos -e POSTGRES_USER=pepe_admin -e POSTGRES_PASSWORD=supersecretpassword -e POSTGRES_DB=escuela_db -p 5435:5432 -d postgres:15-alpine</pre>
+
+      <h5 style="color: #34495e; margin-bottom: 5px; margin-top: 10px;">Explicación de las banderas del comando:</h5>
+      <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 20px; background: #fff; font-size: 14px;">
+        <thead style="background-color: #f2f2f2;">
+          <tr>
+            <th style="width: 25%;">Parámetro</th>
+            <th>¿Qué significa para un novato?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>docker run</code></td>
+            <td>Ordena a Docker crear y encender un contenedor nuevo a partir de una imagen.</td>
+          </tr>
+          <tr>
+            <td><code>--name db_alumnos</code></td>
+            <td>El nombre que le asignamos al contenedor para poder controlarlo, apagarlo o ver sus logs fácilmente.</td>
+          </tr>
+          <tr>
+            <td><code>-e POSTGRES_USER/...</code></td>
+            <td>Inyecta variables de entorno (parámetros de configuración) para definir el usuario, contraseña y base de datos iniciales.</td>
+          </tr>
+          <tr>
+            <td><code>-p 5435:5432</code></td>
+            <td>Mapea los puertos. Abre la base de datos en el puerto <code>5435</code> de tu computadora (externo) y la redirecciona al <code>5432</code> (puerto interno de Postgres en el contenedor).</td>
+          </tr>
+          <tr>
+            <td><code>-d</code></td>
+            <td>Modo "detached". Indica que el contenedor debe correr en segundo plano, liberando tu terminal inmediatamente.</td>
+          </tr>
+          <tr>
+            <td><code>postgres:15-alpine</code></td>
+            <td>La "receta" oficial. Indica que descargue la versión 15 de Postgres con el sistema ligero Alpine Linux (5MB).</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4 style="color: #1976d2; margin-bottom: 5px; margin-top: 20px;">2. Script SQL para crear la tabla y poblar los datos:</h4>
+      <p>Nos conectamos mediante DBeaver al puerto <code>5435</code> con las credenciales anteriores y ejecutamos las siguientes sentencias SQL:</p>
+      <pre style="background: #2c3e50; color: #fff; padding: 12px; border-radius: 5px; overflow-x: auto;">
+-- 1. Crear tabla de alumnos
+CREATE TABLE alumnos (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    apellidos VARCHAR(100) NOT NULL,
+    matematicas NUMERIC(3, 1),
+    espanol NUMERIC(3, 1),
+    historia NUMERIC(3, 1)
+);
+
+-- 2. Insertar registros iniciales
+INSERT INTO alumnos (nombre, apellidos, matematicas, espanol, historia) VALUES
+('Sofía', 'García López', 9.5, 8.8, 10.0),
+('Alejandro', 'Martínez Ruiz', 8.0, 9.2, 7.5),
+('Valeria', 'Hernández Gómez', 10.0, 9.5, 9.8),
+('Mateo', 'Rodríguez Sánchez', 6.5, 7.0, 8.2),
+('Camila', 'Pérez Díaz', 8.7, 8.5, 9.0);</pre>
+
+      <h4 style="color: #1976d2; margin-bottom: 5px; margin-top: 20px;">💡 Tip de Arquitectura (Automatización):</h4>
+      <p>Para evitar ejecutar manualmente el script en DBeaver, podemos guardar este archivo como <code>init.sql</code> dentro de una carpeta llamada <code>db-init</code>, y mapearla como volumen en Docker: <code>-v ./db-init:/docker-entrypoint-initdb.d</code>. Postgres lo ejecutará automáticamente al iniciar.</p>
+    </section>
+  }
+
+  @if (filtro() === '' || 'fase 2 backend inicializar node graphql apollo server pg pool schema queries index.js package.json dotenv variables entorno env'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px;">
+      <h2 style="color: #2c3e50; border-left: 4px solid #f39c12; padding-left: 10px;">🚀 Fase 2: Construcción del Backend (Node.js + GraphQL)</h2>
+      <p>Aquí iniciamos el servidor de Node de cero, instalamos dependencias y configuramos el esquema de GraphQL acoplado a Postgres mediante variables de entorno.</p>
+
+      <h4 style="color: #f39c12; margin-bottom: 5px;">1. Inicialización e instalación de dependencias en la carpeta <code>/backend</code>:</h4>
+      <pre style="background: #2c3e50; color: #fff; padding: 12px; border-radius: 5px; overflow-x: auto;">
+mkdir backend && cd backend
+npm init -y
+npm install &#64;apollo/server graphql pg cors dotenv</pre>
+
+      <h4 style="color: #f39c12; margin-bottom: 5px; margin-top: 20px;">2. Configuración del archivo de entorno (<code>backend/.env</code>):</h4>
+      <pre style="background: #2c3e50; color: #fff; padding: 12px; border-radius: 5px; overflow-x: auto;">
+DB_HOST=localhost
+DB_PORT=5435
+DB_USER=pepe_admin
+DB_PASSWORD=supersecretpassword
+DB_DATABASE=escuela_db</pre>
+
+      <h4 style="color: #f39c12; margin-bottom: 5px; margin-top: 20px;">3. Código completo del servidor (<code>backend/index.js</code>):</h4>
+      <p>Estructuramos los Resolvers, Typedefs y el pool de conexión cargando las variables de entorno:</p>
+      <pre style="background: #2c3e50; color: #fff; padding: 12px; border-radius: 5px; overflow-x: auto;">
+require('dotenv').config(); // Carga de variables de entorno
+
+const &#123; ApolloServer &#125; = require('&#64;apollo/server');
+const &#123; startStandaloneServer &#125; = require('&#64;apollo/server/standalone');
+const &#123; Pool &#125; = require('pg');
+const cors = require('cors');
+
+// Configuración de la conexión a Postgres
+const pool = new Pool(&#123;
+  host: process.env.DB_HOST || 'localhost',
+  port: parseInt(process.env.DB_PORT || '5435', 10),
+  user: process.env.DB_USER || 'pepe_admin',
+  password: process.env.DB_PASSWORD || 'supersecretpassword',
+  database: process.env.DB_DATABASE || 'escuela_db',
+&#125;);
+
+// Esquema de GraphQL
+const typeDefs = `#graphql
+  type Alumno &#123;
+    id: ID!
+    nombre: String!
+    apellidos: String!
+    matematicas: Float
+    espanol: Float
+    historia: Float
+  &#125;
+
+  type Query &#123;
+    obtenerAlumnos: [Alumno]
+  &#125;
+`;
+
+// Resolvers encargados de ir por los datos reales a la base de datos
+const resolvers = &#123;
+  Query: &#123;
+    obtenerAlumnos: async () => &#123;
+      try &#123;
+        const res = await pool.query('SELECT * FROM alumnos ORDER BY id ASC');
+        return res.rows;
+      &#125; catch (err) &#123;
+        console.error("Error consultando la base de datos", err);
+        throw new Error("No se pudieron obtener los datos");
+      &#125;
+    &#125;,
+  &#125;,
+&#125;;
+
+// Levantamos el servidor Apollo aplicando middleware de CORS
+const server = new ApolloServer(&#123; typeDefs, resolvers &#125;);
+
+(async () => &#123;
+  const &#123; url &#125; = await startStandaloneServer(server, &#123;
+    listen: &#123; port: 4000 &#125;,
+    // Permitir accesos del puerto 4200 de Angular
+    cors: &#123;
+      origin: '*',
+      credentials: true
+    &#125;
+  &#125;);
+  console.log(`🚀 Servidor GraphQL listo en: $&#123;url&#125;`);
+&#125;)();</pre>
+    </section>
+  }
+
+  @if (filtro() === '' || 'fase 3 frontend inicializar angular ng new cli install apollo client service tsconfig app.config.ts'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px;">
+      <h2 style="color: #2c3e50; border-left: 4px solid #9b59b6; padding-left: 10px;">⚛️ Fase 3: Creación del Frontend (Angular 19 Standalone)</h2>
+      <p>Pasos exactos para crear el cascarón del frontend en Angular, configurar el cliente Apollo y estructurar el servicio de datos.</p>
+
+      <h4 style="color: #9b59b6; margin-bottom: 5px;">1. Crear el proyecto e instalar dependencias de Apollo Client:</h4>
+      <pre style="background: #2c3e50; color: #fff; padding: 12px; border-radius: 5px; overflow-x: auto;">
+ng new frontend --no-standalone=false --routing=false --style=css
+cd frontend
+npm install apollo-angular &#64;apollo/client graphql --legacy-peer-deps</pre>
+
+      <h4 style="color: #9b59b6; margin-bottom: 5px; margin-top: 20px;">2. Configuración del cliente Apollo en `frontend/src/app/app.config.ts`:</h4>
+      <pre style="background: #2c3e50; color: #fff; padding: 12px; border-radius: 5px; overflow-x: auto;">
+import &#123; ApplicationConfig, provideZoneChangeDetection &#125; from '&#64;angular/core';
+import &#123; provideHttpClient &#125; from '&#64;angular/common/http';
+import &#123; APOLLO_OPTIONS, Apollo &#125; from 'apollo-angular';
+import &#123; HttpLink &#125; from 'apollo-angular/http';
+import &#123; InMemoryCache &#125; from '&#64;apollo/client/core';
+
+export const appConfig: ApplicationConfig = &#123;
+  providers: [
+    provideZoneChangeDetection(&#123; eventCoalescing: true &#125;),
+    provideHttpClient(), // Necesario para que Apollo haga peticiones HTTP
+    Apollo,
+    &#123;
+      provide: APOLLO_OPTIONS,
+      useFactory: (httpLink: HttpLink) => &#123;
+        return &#123;
+          cache: new InMemoryCache(),
+          link: httpLink.create(&#123;
+            uri: 'http://localhost:4000/', // Endpoint de nuestro backend dockerizado
+          &#125;),
+        &#125;;
+      &#125;,
+      deps: [HttpLink],
+    &#125;,
+  ],
+&#125;;</pre>
+
+      <h4 style="color: #9b59b6; margin-bottom: 5px; margin-top: 20px;">3. Creación y código del Servicio de Datos (<code>frontend/src/app/services/alumnos.service.ts</code>):</h4>
+      <pre style="background: #2c3e50; color: #fff; padding: 12px; border-radius: 5px; overflow-x: auto;">
+import &#123; Injectable, inject &#125; from '&#64;angular/core';
+import &#123; Apollo, gql &#125; from 'apollo-angular';
+import &#123; Observable &#125; from 'rxjs';
+import &#123; map &#125; from 'rxjs/operators';
+
+&#64;Injectable(&#123;
+  providedIn: 'root'
+&#125;)
+export class AlumnosService &#123;
+  private apollo = inject(Apollo);
+
+  obtenerAlumnos(): Observable&lt;any[]&gt; &#123;
+    return this.apollo.query&lt;any&gt;(&#123;
+      query: gql`
+        query ObtenerAlumnos &#123;
+          obtenerAlumnos &#123;
+            id
+            nombre
+            apellidos
+            matematicas
+            espanol
+            historia
+          &#125;
+        &#125;
+      `
+    &#125;).pipe(
+      map(resultado => resultado.data.obtenerAlumnos)
+    );
+  &#125;
+&#125;</pre>
+    </section>
+  }
+
+  @if (filtro() === '' || 'fase 4 orquestacion dockerfile backend compose docker-compose.yml up build estructura directorios carpetas'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px;">
+      <h2 style="color: #2c3e50; border-left: 4px solid #2ecc71; padding-left: 10px;">🎼 Fase 4: Enlace, Orquestación de Servicios y Estructura del Proyecto</h2>
+      <p>Cómo estructuramos las carpetas y logramos que el backend se compile y se conecte a la base de datos automáticamente.</p>
+
+      <h4 style="color: #2ecc71; margin-bottom: 5px;">1. Estructura de Directorios final del workspace:</h4>
+      <pre style="background: #2c3e50; color: #fff; padding: 12px; border-radius: 5px; overflow-x: auto;">
+alumnos-docker/
+├── backend/
+│   ├── Dockerfile
+│   ├── index.js
+│   ├── package.json
+│   └── .env
+├── db-init/
+│   └── init.sql
+├── frontend/
+│   ├── src/
+│   ├── package.json
+│   └── tsconfig.json
+└── docker-compose.yml</pre>
+
+      <h4 style="color: #2ecc71; margin-bottom: 5px; margin-top: 20px;">2. Crear el Dockerfile en <code>/backend/Dockerfile</code>:</h4>
+      <pre style="background: #2c3e50; color: #fff; padding: 12px; border-radius: 5px; overflow-x: auto;">
+FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 4000
+CMD ["node", "index.js"]</pre>
+
+      <h4 style="color: #2ecc71; margin-bottom: 5px; margin-top: 20px;">3. Crear el orquestador unificado en la raíz <code>/docker-compose.yml</code>:</h4>
+      <p>Escribe este archivo en la raíz de la carpeta <code>/alumnos-docker</code>:</p>
+      <pre style="background: #2c3e50; color: #fff; padding: 12px; border-radius: 5px; overflow-x: auto;">
+version: '3.8'
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: db_alumnos
+    restart: always
+    environment:
+      POSTGRES_USER: pepe_admin
+      POSTGRES_PASSWORD: supersecretpassword
+      POSTGRES_DB: escuela_db
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db-init:/docker-entrypoint-initdb.d
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: api_alumnos
+    restart: always
+    ports:
+      - "4000:4000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: pepe_admin
+      DB_PASSWORD: supersecretpassword
+      DB_DATABASE: escuela_db
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:</pre>
+
+      <h4 style="color: #2ecc71; margin-bottom: 5px; margin-top: 20px;">4. Comando maestro para compilar y levantar todo el ecosistema:</h4>
+      <pre style="background: #2c3e50; color: #fff; padding: 12px; border-radius: 5px; overflow-x: auto;">docker compose up -d --build</pre>
+    </section>
+  }
+
+  @if (filtro() === '' || 'fase 6 dockerizacion frontend nginx dockerfile docker-compose yml up puertos'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px;">
+      <h2 style="color: #2c3e50; border-left: 4px solid #1abc9c; padding-left: 10px;">📦 Fase 6: Dockerización Completa del Frontend (Nginx en Producción)</h2>
+      <p>Para lograr portabilidad total del frontend, evitamos usar la consola de desarrollo local (`ng serve`) y empaquetamos el compilado estático de Angular dentro de un servidor Nginx ligero.</p>
+
+      <h4 style="color: #1abc9c; margin-bottom: 5px;">1. Crear el Dockerfile en <code>/frontend/Dockerfile</code>:</h4>
+      <pre style="background: #2c3e50; color: #fff; padding: 12px; border-radius: 5px; overflow-x: auto;">
+# Etapa 1: Compilación de la aplicación de Angular
+FROM node:20-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build -- --configuration=production
+
+# Etapa 2: Servidor Web Nginx ligero para producción
+FROM nginx:alpine
+COPY --from=build /app/dist/frontend/browser /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]</pre>
+
+      <h5 style="color: #34495e; margin-bottom: 5px; margin-top: 10px;">Explicación detallada del Dockerfile multi-etapa:</h5>
+      <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 20px; background: #fff; font-size: 14px;">
+        <thead style="background-color: #f2f2f2;">
+          <tr>
+            <th style="width: 30%;">Instrucción</th>
+            <th>¿Qué hace en esta construcción multi-etapa?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>FROM node:20-alpine AS build</code></td>
+            <td>Inicializa la **Etapa 1 (Compilación)**. Descarga Node.js y etiqueta esta fase como <code>build</code> para poder referenciarla más adelante.</td>
+          </tr>
+          <tr>
+            <td><code>RUN npm run build -- ...</code></td>
+            <td>Ejecuta la compilación de Angular en modo producción, generando archivos estáticos optimizados (.js, .css, .html) en el directorio <code>dist/frontend/browser</code>.</td>
+          </tr>
+          <tr>
+            <td><code>FROM nginx:alpine</code></td>
+            <td>Inicializa la **Etapa 2 (Ejecución)**. Descarga un servidor web **Nginx** extremadamente ligero y descarta todo lo anterior (Node.js y código fuente), dejando una imagen final muy pequeña.</td>
+          </tr>
+          <tr>
+            <td><code>COPY --from=build ...</code></td>
+            <td>Copia los archivos estáticos generados en la Etapa 1 (<code>--from=build</code>) directamente al directorio de Nginx para que puedan ser mostrados al público.</td>
+          </tr>
+          <tr>
+            <td><code>EXPOSE 80</code></td>
+            <td>Informa al contenedor que escuche en el puerto estándar HTTP (puerto 80).</td>
+          </tr>
+          <tr>
+            <td><code>CMD ["nginx", "-g", "daemon off;"]</code></td>
+            <td>Arranca el servidor Nginx en primer plano para mantener el contenedor encendido sirviendo la web.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4 style="color: #1abc9c; margin-bottom: 5px; margin-top: 20px;">2. Integrar el Frontend en <code>/docker-compose.yml</code>:</h4>
+      <pre style="background: #2c3e50; color: #fff; padding: 12px; border-radius: 5px; overflow-x: auto;">
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: web_alumnos
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend</pre>
+    </section>
+  }
+
+  @if (filtro() === '' || 'fase 7 automatizacion integracion continua ci cd github actions workflows pipeline yml yaml'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px;">
+      <h2 style="color: #2c3e50; border-left: 4px solid #9b59b6; padding-left: 10px;">🤖 Fase 7: Automatización del Pipeline de CI/CD (GitHub Actions)</h2>
+      <p>Configuramos un pipeline automático que valida cada cambio al hacer push a la rama principal (main), garantizando que todo compile correctamente antes del despliegue.</p>
+
+      <h4 style="color: #9b59b6; margin-bottom: 5px;">1. Crear el archivo del Workflow en <code>.github/workflows/ci-cd.yml</code>:</h4>
+      <pre style="background: #2c3e50; color: #fff; padding: 12px; border-radius: 5px; overflow-x: auto;">
+name: Pipeline de Integracion y Despliegue Continuo (CI/CD)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    name: Integracion Continua (CI)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar codigo del repositorio
+        uses: actions/checkout&#64;v4
+
+      - name: Configurar Node.js (LTS)
+        uses: actions/setup-node&#64;v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: |
+            frontend/package-lock.json
+            backend/package-lock.json
+
+      - name: Instalar dependencias del Backend
+        run: |
+          cd backend
+          npm ci
+
+      - name: Ejecutar pruebas del Backend
+        run: |
+          cd backend
+          npm test
+
+      - name: Instalar dependencias del Frontend
+        run: |
+          cd frontend
+          npm ci --legacy-peer-deps
+
+      - name: Compilar Frontend (Angular)
+        run: |
+          cd frontend
+          npm run build -- --configuration=production
+
+      - name: Validar compilacion de Docker Compose
+        run: |
+          docker compose build</pre>
+
+      <h4 style="color: #9b59b6; margin-bottom: 5px; margin-top: 20px;">2. Explicación detallada de nuestro Workflow:</h4>
+      <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-top: 15px; background: #fff;">
+        <thead style="background-color: #f2f2f2;">
+          <tr>
+            <th style="width: 30%;">Bloque / Comando</th>
+            <th>¿Qué hace en el Pipeline?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>on: push: branches: [main]</code></td>
+            <td>Define los disparadores (triggers). El pipeline se ejecuta automáticamente cada vez que se sube código (push) o se abre un pull request a la rama <code>main</code>.</td>
+          </tr>
+          <tr>
+            <td><code>runs-on: ubuntu-latest</code></td>
+            <td>Le indica a GitHub que reserve un servidor Linux virtual limpio y vacío (Ubuntu) en la nube para correr las tareas.</td>
+          </tr>
+          <tr>
+            <td><code>uses: actions/checkout&#64;v4</code></td>
+            <td>Acción oficial que descarga el código fuente de tu repositorio dentro del servidor temporal de Linux.</td>
+          </tr>
+          <tr>
+            <td><code>uses: actions/setup-node&#64;v4</code></td>
+            <td>Instala y configura Node.js (versión 20) en el entorno de pruebas, habilitando la caché inteligente de paquetes npm.</td>
+          </tr>
+          <tr>
+            <td><code>npm ci</code></td>
+            <td>Instala las dependencias del backend basándose estrictamente en el archivo lock, ideal para entornos de integración continua.</td>
+          </tr>
+          <tr>
+            <td><code>npm test</code></td>
+            <td>Corre los tests unitarios automatizados del backend (nuestro comando mock configurado para devolver éxito).</td>
+          </tr>
+          <tr>
+            <td><code>npm run build</code></td>
+            <td>Compila el frontend de Angular optimizado para entornos de producción.</td>
+          </tr>
+          <tr>
+            <td><code>docker compose build</code></td>
+            <td>Prueba final de estrés de Docker. Compila todas las imágenes locales (Backend y Nginx) para confirmar que compilan sin errores.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  }
+
+  @if (filtro() === '' || 'fase 5 resolucion errores produccion troubleshooting bug criptografia crypto node alpine cors index.js peer deps tsconfig rootdir bloques incomplete block html'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px; background-color: #fdfefe; border: 1px solid #e3e6e6; padding: 20px; border-radius: 6px;">
+      <h2 style="color: #e74c3c; border-left: 4px solid #e74c3c; padding-left: 10px;">🛠️ Fase 5: Resolución de Errores en Producción (Troubleshooting)</h2>
+      <p>El valor real de este desarrollo radicó en cómo solucionamos las incompatibilidades del ecosistema moderno:</p>
+
+      <div style="margin-bottom: 15px;">
+        <h4 style="color: #c0392b; margin-bottom: 5px;">1. El Bug de Criptografía ("crypto is not defined")</h4>
+        <p style="margin-top: 5px;">Las herramientas de Apollo Server requerían APIs globales de cifrado ausentes por defecto en Node 18 Alpine. Lo solucionamos actualizando el entorno base de nuestro <code>Dockerfile</code> a la versión LTS más robusta: <code>FROM node:20-alpine</code>.</p>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <h4 style="color: #c0392b; margin-bottom: 5px;">2. Bloqueo de Seguridad entre Puertos (CORS)</h4>
+        <p style="margin-top: 5px;">Al intentar leer la API desde el puerto <code>4200</code> de Angular hacia el puerto <code>4000</code> de Node, el navegador bloqueaba las respuestas. Solucionamos el problema reconfigurando el inicio del backend en <code>index.js</code> inyectando middleware de control de accesos explícito: <code>cors: &#123; origin: '*' &#125;</code>.</p>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <h4 style="color: #c0392b; margin-bottom: 5px;">3. Conflicto de Versiones en el Árbol de Dependencias de NPM</h4>
+        <p style="margin-top: 5px;">El instalador de paquetes arrojaba el error <code>ERESOLVE unable to resolve dependency tree</code> debido a discrepancias estrictas entre Angular 19 y los paquetes de Apollo. Forzamos la instalación segura mitigando la restricción visual mediante el flag: <code>--legacy-peer-deps</code>.</p>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <h4 style="color: #c0392b; margin-bottom: 5px;">4. Conflicto del Directorio Raíz de TypeScript</h4>
+        <p style="margin-top: 5px;">El compilador de TS marcaba error en <code>tsconfig.json</code> al no identificar con exactitud el origen de la compilación. Lo solucionamos fijando de forma explícita el parámetro <code>"rootDir": "."</code> en las opciones del compilador.</p>
+      </div>
+
+      <div>
+        <h4 style="color: #c0392b; margin-bottom: 5px;">5. Choque de Sintaxis de Bloques en Angular Moderno ("Incomplete block apollo")</h4>
+        <p style="margin-top: 5px;">El nuevo motor de plantillas de Angular confundía el carácter <code>&#64;</code> de las dependencias de npm con directivas del framework. Lo blindamos usando su correspondiente entidad de escape HTML: <code>&amp;#64;</code> o su equivalente seguro.</p>
+      </div>
+    </section>
+  }
+
+  <!-- Botón flotante para subir al inicio -->
+  <a href="#inicio-pagina" style="position: fixed; bottom: 40px; right: 40px; width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #1976d2, #1565c0); color: white; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); transition: transform 0.2s, background-color 0.2s; z-index: 1000;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" title="Subir al inicio">
+    ▲
+  </a>
+</div>

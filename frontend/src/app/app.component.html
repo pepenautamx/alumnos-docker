@@ -1,27 +1,104 @@
-<div style="padding: 30px; font-family: sans-serif;">
-  <h2>📋 Lista de Alumnos y Calificaciones (Docker + GraphQL + Angular)</h2>
-  <hr>
+<nav style="background-color: #2c3e50; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; color: white; font-family: sans-serif; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
 
-  <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-    <thead style="background-color: #f2f2f2;">
-      <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Apellidos</th>
-        <th>Matemáticas</th>
-        <th>Español</th>
-        <th>Historia</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let alumno of alumnos$ | async">
-        <td>{{ alumno.id }}</td>
-        <td><strong>{{ alumno.nombre }}</strong></td>
-        <td>{{ alumno.apellidos }}</td>
-        <td align="center">{{ alumno.matematicas }}</td>
-        <td align="center">{{ alumno.espanol }}</td>
-        <td align="center">{{ alumno.historia }}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+  <div style="font-size: 20px; font-weight: bold; cursor: pointer;" (click)="cambiarPagina('alumnos')">
+    🏫 Sistema Control Escolar Full-Stack
+  </div>
+
+  <div style="display: flex; gap: 20px;">
+    <button
+      (click)="cambiarPagina('alumnos')"
+      [style.background-color]="paginaActiva() === 'alumnos' ? '#1abc9c' : 'transparent'"
+      style="color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s;">
+      📋 Calificaciones
+    </button>
+    <button
+      (click)="cambiarPagina('bitacora')"
+      [style.background-color]="paginaActiva() === 'bitacora' ? '#1abc9c' : 'transparent'"
+      style="color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s;">
+      🛡️ Bitácora Paso a Paso
+    </button>
+    <button
+      (click)="cambiarPagina('docker')"
+      [style.background-color]="paginaActiva() === 'docker' ? '#1abc9c' : 'transparent'"
+      style="color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s;">
+      🐳 ¿Qué es Docker?
+    </button>
+    <button
+      (click)="cambiarPagina('cicd')"
+      [style.background-color]="paginaActiva() === 'cicd' ? '#1abc9c' : 'transparent'"
+      style="color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s;">
+      🚀 ¿Qué es CI/CD?
+    </button>
+    <button
+      (click)="cambiarPagina('iniciar')"
+      [style.background-color]="paginaActiva() === 'iniciar' ? '#1abc9c' : 'transparent'"
+      style="color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s;">
+      💻 Iniciar en Casa
+    </button>
+  </div>
+
+  <div>
+    <input
+      type="text"
+      [value]="terminoBusqueda()"
+      (input)="onBuscar($event)"
+      placeholder="🔍 Buscar texto rápido..."
+      style="padding: 8px 15px; border-radius: 20px; border: none; outline: none; width: 250px; font-size: 14px;">
+  </div>
+</nav>
+
+<main style="padding: 20px; font-family: sans-serif;">
+
+  @if (paginaActiva() === 'alumnos') {
+    <div style="padding: 20px;">
+      <h2>📋 Lista de Alumnos y Calificaciones</h2>
+      <hr>
+
+      <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+        <thead style="background-color: #f2f2f2;">
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Matemáticas</th>
+            <th>Español</th>
+            <th>Historia</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (alumno of alumnos$ | async; track alumno.id) {
+            @if (terminoBusqueda() === '' ||
+                 alumno.nombre.toLowerCase().includes(terminoBusqueda().toLowerCase()) ||
+                 alumno.apellidos.toLowerCase().includes(terminoBusqueda().toLowerCase())) {
+              <tr>
+                <td>{{ alumno.id }}</td>
+                <td><strong>{{ alumno.nombre }}</strong></td>
+                <td>{{ alumno.apellidos }}</td>
+                <td align="center">{{ alumno.matematicas }}</td>
+                <td align="center">{{ alumno.espanol }}</td>
+                <td align="center">{{ alumno.historia }}</td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if (paginaActiva() === 'bitacora') {
+    <app-paso-a-paso [filtro]="terminoBusqueda()"></app-paso-a-paso>
+  }
+
+  @if (paginaActiva() === 'docker') {
+    <app-que-es-docker [filtro]="terminoBusqueda()"></app-que-es-docker>
+  }
+
+  @if (paginaActiva() === 'cicd') {
+    <app-que-es-cicd [filtro]="terminoBusqueda()"></app-que-es-cicd>
+  }
+
+  @if (paginaActiva() === 'iniciar') {
+    <app-iniciar-proyecto [filtro]="terminoBusqueda()"></app-iniciar-proyecto>
+  }
+
+</main>

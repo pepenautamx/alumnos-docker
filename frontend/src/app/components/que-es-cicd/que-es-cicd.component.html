@@ -1,0 +1,256 @@
+<div id="inicio-pagina" class="cicd-guide-container" style="padding: 30px; font-family: sans-serif; line-height: 1.6; color: #333; max-width: 1250px; margin: 0 auto; font-size: 17px; scroll-behavior: smooth;">
+  <h1 style="color: #9b59b6; border-bottom: 2px solid #9b59b6; padding-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+    🚀 Módulo Educativo: Introducción a CI/CD y su relación con Docker
+  </h1>
+  <p><strong>Autor de la Bitácora:</strong> Pepe</p>
+  <p>En este módulo aprenderás qué significan las siglas CI y CD, cómo automatizan el ciclo de vida del desarrollo de software y por qué Docker es la pieza clave que hace funcionar todo este engranaje.</p>
+
+  <hr>
+
+  @if (filtro() === '' || 'que es ci cd integracion entrega despliegue continuo automatizacion calidad'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px;">
+      <h2 style="color: #2c3e50;">💡 ¿Qué es CI/CD?</h2>
+      <p><strong>CI/CD</strong> es un método que automatiza las etapas de desarrollo de software para entregar aplicaciones de forma rápida y sin errores. Se divide en dos partes principales:</p>
+      
+      <div style="display: flex; gap: 20px; flex-wrap: wrap; margin: 20px 0;">
+        <div style="flex: 1; min-width: 280px; background-color: #faf0fc; border-left: 4px solid #9b59b6; padding: 20px; border-radius: 8px;">
+          <h3 style="color: #8e44ad; margin-top: 0;">🧪 CI: Integración Continua (Continuous Integration)</h3>
+          <p>Es la fase donde cada vez que un programador sube un cambio al repositorio (Git), un servidor automatizado compila el código y ejecuta pruebas unitarias para confirmar que todo funciona correctamente antes de unirlo al proyecto principal.</p>
+        </div>
+        <div style="flex: 1; min-width: 280px; background-color: #ebf5fb; border-left: 4px solid #2980b9; padding: 20px; border-radius: 8px;">
+          <h3 style="color: #2471a3; margin-top: 0;">🚀 CD: Entrega o Despliegue Continuo (Continuous Delivery / Deployment)</h3>
+          <p>Es la fase que toma el código ya verificado en el CI y lo empaqueta automáticamente para enviarlo a los servidores de producción (la nube), de modo que los usuarios finales puedan usar las nuevas mejoras sin interrupciones.</p>
+        </div>
+      </div>
+    </section>
+  }
+
+  @if (filtro() === '' || 'analogia vida real fabrica autos ensamblaje inspeccion transporte control calidad'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px;">
+      <h2 style="color: #2c3e50;">🚗 Analogía de la vida real: La Fábrica de Autos</h2>
+      <p>Imagina que estás construyendo un coche en una planta de ensamblaje moderna:</p>
+
+      <div style="background-color: #fcf3cf; border-left: 4px solid #f1c40f; padding: 20px; margin: 15px 0; border-radius: 8px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 280px;">
+          <strong>🛠️ El proceso sin automatización (El caos antiguo):</strong><br>
+          Cada mecánico arma una parte del auto por su cuenta. Al final, intentan unir las piezas y descubren que las puertas no encajan y los frenos fallan. Tienen que desarmar todo, probar pieza por pieza manualmente y retrasar la entrega meses.
+          <br><br>
+          <strong>🤖 El proceso con CI/CD y Docker:</strong><br>
+          <ul>
+            <li><strong>CI (La inspección en línea):</strong> Conforme se ensambla cada parte del motor, un brazo robótico automático la prueba. Si hay un tornillo suelto, suena una alarma de inmediato (CI fallido) y se corrige al instante.</li>
+            <li><strong>CD (La entrega estandarizada):</strong> Cuando el coche pasa todas las pruebas, se monta en un camión de transporte estandarizado (Docker) que lo lleva de forma segura a cualquier concesionario del país sin importar el estado de las carreteras.</li>
+          </ul>
+        </div>
+
+        <!-- SVG: Fábrica de Autos de Software -->
+        <svg viewBox="0 0 250 150" style="width: 250px; height: 150px; background: #fafafa; border-radius: 8px; border: 1px solid #e2e8f0; padding: 5px;">
+          <rect x="10" y="20" width="80" height="40" rx="4" fill="#f8d7da" stroke="#dc3545" stroke-width="1.5"/>
+          <text x="50" y="45" fill="#721c24" font-size="10" font-family="sans-serif" font-weight="bold" text-anchor="middle">Ensamble</text>
+          
+          <path d="M 95 40 L 125 40" stroke="#6c757d" stroke-width="2" stroke-dasharray="3,3"/>
+          <polygon points="125,40 118,36 118,44" fill="#6c757d"/>
+
+          <rect x="130" y="20" width="105" height="40" rx="4" fill="#d4edda" stroke="#28a745" stroke-width="1.5"/>
+          <text x="182" y="40" fill="#155724" font-size="10" font-family="sans-serif" font-weight="bold" text-anchor="middle">Test Robot (CI)</text>
+          <text x="182" y="52" fill="#155724" font-size="8" font-family="sans-serif" text-anchor="middle">¡Aprobado! (Verde)</text>
+
+          <path d="M 182 65 L 182 95" stroke="#6c757d" stroke-width="2" stroke-dasharray="3,3"/>
+          <polygon points="182,95 178,88 186,88" fill="#6c757d"/>
+
+          <rect x="105" y="100" width="130" height="40" rx="4" fill="#cce5ff" stroke="#004085" stroke-width="1.5"/>
+          <text x="170" y="125" fill="#004085" font-size="10" font-family="sans-serif" font-weight="bold" text-anchor="middle">Camión Docker (CD)</text>
+        </svg>
+      </div>
+    </section>
+  }
+
+  @if (filtro() === '' || 'que relacion tiene con docker por que van de la mano artefacto portabilidad consistencia pipeline'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px;">
+      <h2 style="color: #2c3e50;">🐳 ¿Qué relación tiene con Docker?</h2>
+      <p>Docker y CI/CD son tecnologías independientes, pero van de la mano por tres motivos arquitectónicos principales:</p>
+      
+      <table border="1" cellpadding="12" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+        <thead style="background-color: #f2f2f2;">
+          <tr>
+            <th style="width: 30%;">Razón</th>
+            <th style="width: 35%;">¿Cómo funciona sin Docker?</th>
+            <th style="width: 35%;">¿Cómo mejora con Docker?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Consistencia del entorno</strong></td>
+            <td>El servidor de pruebas CI tiene una versión de Node.js v18, pero tu computadora tiene v20. Las pruebas pasan localmente pero fallan en el servidor de CI.</td>
+            <td><strong>Garantía:</strong> Tanto las pruebas locales como las del servidor de CI corren dentro del mismo contenedor con Node.js v20.</td>
+          </tr>
+          <tr>
+            <td><strong>2. El Artefacto es la Imagen</strong></td>
+            <td>El pipeline de CD sube un archivo zip con código fuente. El servidor debe descomprimirlo, instalar librerías npm en caliente y cruzar los dedos para que no haya errores de red.</td>
+            <td><strong>Inmutable:</strong> Se construye la Imagen Docker una sola vez, se prueba en CI y esa misma imagen congelada y probada es la que se despliega. No hay instalación en caliente en producción.</td>
+          </tr>
+          <tr>
+            <td><strong>3. Limpieza en los Runners</strong></td>
+            <td>Cada proyecto necesita configuraciones distintas (Java, Python, Postgres). El servidor de CI se llena de software basura y librerías en conflicto.</td>
+            <td><strong>Aislamiento:</strong> El servidor de CI solo necesita Docker. Cada tarea de pruebas corre en contenedores separados y aislados sin ensuciar la máquina.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  }
+
+  @if (filtro() === '' || 'diagrama visual flujo pipeline github actions docker hub despliegue nube'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px;">
+      <h2 style="color: #2c3e50;">📊 Flujo Completo de un Pipeline con Docker</h2>
+      <p>Este es el ciclo de vida automático desde que escribes código hasta que se publica en producción:</p>
+
+      <!-- SVG Diagrama: Flujo del Pipeline -->
+      <div style="background: #fafafa; border: 1px solid #e2e8f0; border-radius: 8px; padding: 25px; margin: 20px 0; text-align: center;">
+        <svg viewBox="0 0 900 180" style="width: 100%; max-width: 1100px; height: auto;">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#718096" />
+            </marker>
+          </defs>
+
+          <!-- Step 1: Programador -->
+          <rect x="10" y="25" width="130" height="90" rx="8" fill="#ffffff" stroke="#cbd5e0" stroke-width="2"/>
+          <text x="75" y="55" font-family="sans-serif" font-size="12" font-weight="bold" fill="#2d3748" text-anchor="middle">1. Desarrollador</text>
+          <text x="75" y="75" font-family="sans-serif" font-size="10" fill="#718096" text-anchor="middle">Git Push Código</text>
+          <text x="75" y="90" font-family="sans-serif" font-size="9" fill="#a0aec0" text-anchor="middle">al repositorio</text>
+
+          <line x1="145" y1="70" x2="190" y2="70" stroke="#718096" stroke-width="2" marker-end="url(#arrow)"/>
+
+          <!-- Step 2: Servidor CI -->
+          <rect x="195" y="25" width="160" height="90" rx="8" fill="#faf0fc" stroke="#9b59b6" stroke-width="2"/>
+          <text x="275" y="55" font-family="sans-serif" font-size="12" font-weight="bold" fill="#8e44ad" text-anchor="middle">2. Servidor CI</text>
+          <text x="275" y="75" font-family="sans-serif" font-size="10" fill="#8e44ad" text-anchor="middle">Ejecuta Tests Unitarios</text>
+          <text x="275" y="90" font-family="sans-serif" font-size="9" fill="#9b59b6" text-anchor="middle">(GitHub Actions/GitLab)</text>
+
+          <line x1="360" y1="70" x2="405" y2="70" stroke="#718096" stroke-width="2" marker-end="url(#arrow)"/>
+          <text x="382" y="60" font-family="sans-serif" font-size="9" font-weight="bold" fill="#276749" text-anchor="middle">OK</text>
+
+          <!-- Step 3: Construcción Imagen -->
+          <rect x="410" y="25" width="160" height="90" rx="8" fill="#ebf8ff" stroke="#3182ce" stroke-width="2"/>
+          <text x="490" y="55" font-family="sans-serif" font-size="12" font-weight="bold" fill="#2b6cb0" text-anchor="middle">3. Docker Build</text>
+          <text x="490" y="75" font-family="sans-serif" font-size="10" fill="#2b6cb0" text-anchor="middle">Construye y Sube Imagen</text>
+          <text x="490" y="90" font-family="sans-serif" font-size="9" fill="#4299e1" text-anchor="middle">a Docker Hub / ECR</text>
+
+          <line x1="575" y1="70" x2="620" y2="70" stroke="#718096" stroke-width="2" marker-end="url(#arrow)"/>
+
+          <!-- Step 4: Servidor Producción -->
+          <rect x="625" y="25" width="150" height="90" rx="8" fill="#f0fff4" stroke="#38a169" stroke-width="2"/>
+          <text x="700" y="55" font-family="sans-serif" font-size="12" font-weight="bold" fill="#276749" text-anchor="middle">4. Servidor CD</text>
+          <text x="700" y="75" font-family="sans-serif" font-size="10" fill="#276749" text-anchor="middle">Descarga nueva imagen</text>
+          <text x="700" y="90" font-family="sans-serif" font-size="9" fill="#48bb78" text-anchor="middle">y reinicia contenedor</text>
+        </svg>
+      </div>
+    </section>
+  }
+
+  @if (filtro() === '' || 'conceptos clave glosario pipeline runner registry webhook despliegue'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px;">
+      <h2 style="color: #2c3e50; border-left: 4px solid #8e44ad; padding-left: 10px;">📜 Glosario de Conceptos Clave</h2>
+      
+      <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+        <thead style="background-color: #f2f2f2;">
+          <tr>
+            <th style="width: 30%;">Término</th>
+            <th>¿Qué significa en lenguaje sencillo?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Pipeline (Tubería)</strong></td>
+            <td>La secuencia de pasos automáticos que recorre tu código (Prueba ➔ Compila ➔ Despliega).</td>
+          </tr>
+          <tr>
+            <td><strong>Runner (Ejecutor)</strong></td>
+            <td>La computadora/servidor que hace el trabajo físico de correr los comandos del pipeline.</td>
+          </tr>
+          <tr>
+            <td><strong>Registry (Registro)</strong></td>
+            <td>La tienda o almacén donde se guardan tus imágenes Docker versión por versión (ej. Docker Hub).</td>
+          </tr>
+          <tr>
+            <td><strong>Webhook</strong></td>
+            <td>El "teléfono" que avisa al servidor de CI/CD que acabas de subir código a GitHub para que encienda los robots de prueba.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  }
+
+  @if (filtro() === '' || 'como se instala ci cd configurar github actions workflows pipeline yml yaml pasos activo proyecto real'.includes(filtro().toLowerCase())) {
+    <section style="margin-bottom: 40px; background-color: #fafafa; border: 1px solid #e1e4e6; padding: 25px; border-radius: 6px;">
+      <h2 style="color: #8e44ad; margin-top: 0;">🛠️ ¿Cómo se configura CI/CD en este Proyecto? (Activo y Real)</h2>
+      <p>¡Este proyecto ya se encuentra 100% configurado para CI/CD! No es un ejemplo simulado. Hemos creado y configurado el archivo de automatización real en la raíz del espacio de trabajo:</p>
+      
+      <p>Ruta física del archivo: <a href="file:///c:/ANGULAR/alumnos-docker/.github/workflows/ci-cd.yml">.github/workflows/ci-cd.yml</a></p>
+
+      <h3 style="color: #34495e;">Paso a Paso de nuestro Pipeline configurado:</h3>
+      <ol>
+        <li><strong>Fase 1: Descarga y Entorno:</strong> GitHub Actions descarga el código en sus servidores en la nube y configura Node.js LTS v20 con caché inteligente de NPM.</li>
+        <li><strong>Fase 2: Testeo del Backend:</strong> Se instalan las librerías limpiamente (`npm ci`) y se ejecuta el comando de pruebas automatizado (`npm test`).</li>
+        <li><strong>Fase 3: Compilación del Frontend (Angular):</strong> Se descargan las dependencias del frontend y se genera el compilado estático de producción de Angular.</li>
+        <li><strong>Fase 4: Validación de Docker:</strong> Se ejecuta `docker compose build` en caliente en la nube para asegurar que los Dockerfiles del Backend (Node) y Frontend (Nginx) se compilan perfectamente.</li>
+      </ol>
+
+      <h4 style="color: #34495e; margin-bottom: 5px;">Receta real activa de nuestro proyecto (<code>ci-cd.yml</code>):</h4>
+      <pre style="background: #2c3e50; color: #fff; padding: 15px; border-radius: 5px; overflow-x: auto;">
+name: Pipeline de Integracion y Despliegue Continuo (CI/CD)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    name: Integracion Continua (CI)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar codigo del repositorio
+        uses: actions/checkout&#64;v4
+
+      - name: Configurar Node.js (LTS)
+        uses: actions/setup-node&#64;v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: |
+            frontend/package-lock.json
+            backend/package-lock.json
+
+      - name: Instalar dependencias del Backend
+        run: |
+          cd backend
+          npm ci
+
+      - name: Ejecutar pruebas del Backend
+        run: |
+          cd backend
+          npm test
+
+      - name: Instalar dependencias del Frontend
+        run: |
+          cd frontend
+          npm ci --legacy-peer-deps
+
+      - name: Compilar Frontend (Angular)
+        run: |
+          cd frontend
+          npm run build -- --configuration=production
+
+      - name: Validar compilacion de Docker Compose
+        run: |
+          docker compose build</pre>
+    </section>
+  }
+
+  <!-- Botón flotante para subir al inicio -->
+  <a href="#inicio-pagina" style="position: fixed; bottom: 40px; right: 40px; width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); transition: transform 0.2s, background-color 0.2s; z-index: 1000;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" title="Subir al inicio">
+    ▲
+  </a>
+</div>
